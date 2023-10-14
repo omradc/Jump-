@@ -8,32 +8,40 @@ public class Jump : MonoBehaviour
     public GameObject cam;
     public float force;
     float distance;
-    Vector2 posA;
-    Vector2 posB;
+    Vector2 startMousePos;
+    Vector2 lastMousePos;
+    Vector2 currentMousePos;
+    Vector2 direction;
+
+    public LineRenderer lineRenderer;
 
     void Start()
     {
+
     }
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            posA = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
+            startMousePos = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
         }
-
+        //if (Input.GetMouseButton(0))
+        //{
+        //    currentMousePos = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
+        //    print(currentMousePos);
+        //}
         if (Input.GetMouseButtonUp(0))
         {
-            //Game Mechanics
-            posB = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
-            distance = Vector3.Distance(posA, posB);
-            Vector2 direction = ((posB - posA) * -1).normalized;
+            lastMousePos = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
+            distance = Vector3.Distance(startMousePos, lastMousePos);
+            direction = ((lastMousePos - startMousePos) * -1).normalized;
             rb.AddForce(direction * distance * force, ForceMode.Impulse);
         }
-
-
     }
 
-
-
+    void DrawLine()
+    {
+        lineRenderer.SetPosition(0, transform.position);
+    }
 
 }
