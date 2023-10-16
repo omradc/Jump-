@@ -1,47 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
     public Rigidbody rb;
-    public GameObject cam;
-    public float force;
-    float distance;
+    public Camera cam;
+    public float jumpForce;
+    public float timeToJump = 0.5f;
+
+    Vector3 force;
     Vector2 startMousePos;
     Vector2 lastMousePos;
-    Vector2 currentMousePos;
     Vector2 direction;
+    float distance;
+    bool isGrounded;
 
-    public LineRenderer lineRenderer;
+    Indicator indicator;
+
 
     void Start()
     {
-
+        indicator = Indicator.instance;
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (isGrounded)
         {
-            startMousePos = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
-        }
-        //if (Input.GetMouseButton(0))
-        //{
-        //    currentMousePos = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
-        //    print(currentMousePos);
-        //}
-        if (Input.GetMouseButtonUp(0))
-        {
-            lastMousePos = cam.GetComponent<Camera>().ScreenToViewportPoint(Input.mousePosition);
-            distance = Vector3.Distance(startMousePos, lastMousePos);
-            direction = ((lastMousePos - startMousePos) * -1).normalized;
-            rb.AddForce(direction * distance * force, ForceMode.Impulse);
+            if (Input.GetMouseButtonDown(0))
+            {
+                startMousePos = cam.ScreenToViewportPoint(Input.mousePosition);
+                indicator.Show();
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                lastMousePos = cam.ScreenToViewportPoint(Input.mousePosition);
+                distance = Vector3.Distance(startMousePos, lastMousePos);
+                direction = ((lastMousePos - startMousePos) * -1).normalized;
+                force = direction * distance * jumpForce;
+
+                indicator.DrawTrajectory(force);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                rb.AddForce(force, ForceMode.Impulse);
+                indicator.Hide();
+            }
         }
     }
 
-    void DrawLine()
+    private void OnCollisionEnter(Collision collision)
     {
-        lineRenderer.SetPosition(0, transform.position);
+        StartCoroutine("WaitForJump");
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        isGrounded = false;
+    }
+
+    IEnumerator WaitForJump()
+    {
+        yield return new WaitForSeconds(timeToJump);
+        isGrounded = true;
     }
 
 }
