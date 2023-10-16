@@ -32,12 +32,6 @@ public class Indicator : MonoBehaviour
     {
         transform.position = playerPos.position;
     }
-    public void Stick(float extendAmount, Vector3 direction)
-    {
-        child.transform.localScale = new Vector3(1, extendAmount, 1);
-        child.transform.rotation = Quaternion.LookRotation(direction);
-    }
-
     public void DrawTrajectory(Vector3 _force)
     {
         Vector3 origin = playerPos.position;
