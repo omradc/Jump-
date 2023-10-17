@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    public float gameDifficulty;
+    public float fallTime = 5;
     public float fallSpeed;
-    public bool timeToFall;
+    public float destroyTime;
+    bool timeToFall;
     void Start()
     {
         timeToFall = false;
@@ -16,13 +17,20 @@ public class Platform : MonoBehaviour
     void Update()
     {
         if (timeToFall)
+        {
             transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
+        }
+
     }
 
-   public IEnumerator Fall()
+    public IEnumerator Fall()
     {
-        yield return new WaitForSeconds(gameDifficulty);
+        yield return new WaitForSeconds(fallTime);
         timeToFall = true;
-        print("ok");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(gameObject, destroyTime);
     }
 }

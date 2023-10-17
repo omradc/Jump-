@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Platform
+  - Child Platform
   layers:
   - Default
   - TransparentFX

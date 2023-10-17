@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class LevelDesigner : MonoBehaviour
 {
+    #region Singelton
+    public static LevelDesigner instance;
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(instance);
+    }
+    #endregion
+
     public GameObject lastPlatform;
     public GameObject platformPrefab;
     public GameObject level;
@@ -14,9 +25,10 @@ public class LevelDesigner : MonoBehaviour
     float scaleX;
     float posX;
     float posY;
+    float difficulty;
     void Start()
     {
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 5; i++)
         {
             CreatePlatform();
         }
@@ -32,9 +44,16 @@ public class LevelDesigner : MonoBehaviour
     public void CreatePlatform()
     {
         currentPlatform = Instantiate(platformPrefab, lastPlatform.transform.position, transform.rotation);
-        SetPlatformWidth(platformWidth);
-        SetPlatformHighAndDistnace(platformDistance, platformHigh);
         lastPlatform = currentPlatform;
+
+        //Game Difficulty
+        currentPlatform.GetComponent<Platform>().fallTime -= difficulty;
+        difficulty += 0.1f;
+
+
+        SetPlatformHighAndDistnace(platformDistance, platformHigh);
+        SetPlatformWidth(platformWidth);
+
         currentPlatform.transform.SetParent(level.transform);
     }
 
@@ -42,11 +61,11 @@ public class LevelDesigner : MonoBehaviour
     void SetPlatformWidth(float width)
     {
         scaleX = Random.Range(1, width);
-        currentPlatform.transform.localScale = new Vector3(scaleX, 30, 2);
+        currentPlatform.transform.localScale = new Vector3(scaleX, 100, 2);
     }
     void SetPlatformHighAndDistnace(float distnace, float high)
     {
-        posX = Random.Range(0, distnace);
+        posX = distnace;
         posY = Random.Range(1, high);
         currentPlatform.transform.position += new Vector3(posX, posY, 0);
     }
