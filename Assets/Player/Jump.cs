@@ -55,6 +55,9 @@ public class Jump : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         StartCoroutine("WaitForJump");
+        if (collision.transform.tag == "Platform")
+            StartCoroutine(collision.gameObject.GetComponent<Platform>().Fall());
+
     }
 
     private void OnCollisionExit(Collision collision)
