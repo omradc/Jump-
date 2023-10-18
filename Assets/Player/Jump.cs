@@ -104,7 +104,7 @@ public class Jump : MonoBehaviour
         score = Mathf.Round(score);
         scoreText.text = $"{score}";
 
-        if (score > highScore)
+        if (score > PlayerPrefs.GetFloat("HighScore"))
         {
             highScore = score;
             highScoreText.text = $"High: {highScore}";
