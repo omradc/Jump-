@@ -1276,7 +1276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2648316232207943724, guid: 4375a004cb3d422408a5209f1ef9cfee, type: 3}
       propertyPath: jumpForce
-      value: 100
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 2648316232207943724, guid: 4375a004cb3d422408a5209f1ef9cfee, type: 3}
       propertyPath: scoreText
@@ -2200,7 +2200,7 @@ PrefabInstance:
       objectReference: {fileID: 863031173}
     - target: {fileID: 3129617142498545565, guid: 2d4380c7e9ecbfd44989d8cc6086ea79, type: 3}
       propertyPath: linePoints
-      value: 175
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6318662412470297605, guid: 2d4380c7e9ecbfd44989d8cc6086ea79, type: 3}
       propertyPath: m_LocalPosition.x
